@@ -7,15 +7,19 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     public static final int WIDTH = 720;
     public static final int HEIGHT = 1280;
     public static final int MOVESPEED = -5;
+    private long sparkleStartTime;
     private MainThread thread;
     private Background bg;
     private Player player;
+    private ArrayList<Sparklepuff> sparkle;
 
 
     public GamePanel(Context context)
@@ -30,6 +34,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         //make gamePanel focusable so it can handle events
         setFocusable(true);
+
     }
 
     @Override
@@ -38,13 +43,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder){
         boolean retry = true;
-        while(retry)
+        int counter = 0;
+        while(retry && counter<1000)
         {
             try{thread.setRunning(false);
                 thread.join();
+                retry = false;
 
             }catch(InterruptedException e){e.printStackTrace();}
-            retry = false;
         }
 
     }
@@ -54,6 +60,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         //assets for game
         bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.sstarbg));
         player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.coolstar), 56, 56, 1);
+        sparkle = new ArrayList<Sparklepuff>();
+
+        sparkleStartTime= System.nanoTime();
+
         //safely start the game loop
         thread.setRunning(true);
         thread.start();
@@ -86,7 +96,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         //No Touch Detected
         if(event.getAction()==MotionEvent.ACTION_UP)
         {
-            player.setUp(0);
             player.setLeft(false);
             player.setRight(false);
             return true;
@@ -98,9 +107,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void update()
     {
         if(player.getPlaying()) {
+
             bg.update();
             player.update();
 
+            long elapsed = (System.nanoTime() - sparkleStartTime)/1000000;
+            if(elapsed > 120){
+                sparkle.add(new Sparklepuff(player.getX()+28, player.getY()));
+                sparkleStartTime = System.nanoTime();
+            }
+
+            for(int i = 0; i<sparkle.size();i++)
+            {
+                sparkle.get(i).update();
+                if(sparkle.get(i).getY()>310)
+                {
+                    sparkle.remove(i);
+                }
+            }
         }
     }
     @Override
@@ -115,6 +139,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             canvas.scale(scaleFactorX, scaleFactorY);
             bg.draw(canvas);
             player.draw(canvas);
+            for(Sparklepuff sp: sparkle)
+            {
+                sp.draw(canvas);
+            }
+
             canvas.restoreToCount(savedState);
         }
     }
