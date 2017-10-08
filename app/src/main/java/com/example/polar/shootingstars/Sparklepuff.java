@@ -14,7 +14,7 @@ public class Sparklepuff extends GameObject{
     }
     public void update()
     {
-        y-=10;
+        y-=100;
     }
     public void draw(Canvas canvas)
     {
