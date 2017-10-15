@@ -17,7 +17,7 @@ public class Player extends GameObject{
     public Player(Bitmap res, int w, int h, int numFrames) {
 
         x = GamePanel.WIDTH / 2;
-        y = GamePanel.HEIGHT / 4;
+        y = GamePanel.HEIGHT/ 4;
         dy = 0;
         score = 0;
         height = h;
