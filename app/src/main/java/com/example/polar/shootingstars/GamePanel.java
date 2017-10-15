@@ -127,14 +127,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 //first missile always goes down the middle
                 if(asteroids.size()==0)
                 {
-                    asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(),R.drawable.
-                            missile),HEIGHT + 10, WIDTH/2, 45, 15, player.getScore(), 13));
+                    asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
+                            WIDTH/2, HEIGHT , 45, 15, player.getScore(), 13));
                 }
                 else
                 {
 
                     asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
-                            WIDTH+10, (int)(rand.nextDouble()*(HEIGHT)),45,15, player.getScore(),13));
+                            (int)(rand.nextDouble()*(WIDTH)), HEIGHT ,45,15, player.getScore(),13));
                 }
 
                 //reset timer
@@ -154,7 +154,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
                 }
                 //remove missile if it is way off the screen
-                if(asteroids.get(i).getY()<-11)
+                if(asteroids.get(i).getY() < 0 )
                 {
                     System.out.println("removing missile");
                     asteroids.remove(i);
