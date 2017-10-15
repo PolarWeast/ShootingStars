@@ -13,8 +13,8 @@ import java.util.Random;
 
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
-    public static final int WIDTH = 720;
-    public static final int HEIGHT = 1280;
+    public static final int WIDTH = 1080;
+    public static final int HEIGHT = 1920;
     public static final int MOVESPEED = -5;
     private long sparkleStartTime;
     private long asteroidStartTime;
@@ -66,7 +66,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         //assets for game
-        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.sstarbg));
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.starrynight));
         player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.basicstar), 98, 94, 1);
         sparkle = new ArrayList<Sparklepuff>();
         asteroids = new ArrayList<Asteroid>();
@@ -119,17 +119,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
             //add asteroids on timer
             long missileElapsed = (System.nanoTime() - asteroidStartTime) / 1000000;
-            if (missileElapsed > (2000 - player.getScore() / 4)) {
+            if (missileElapsed > (500 - player.getScore() / 4)) {
 
                 System.out.println("making missile");
                 //first missile always goes down the middle
                 if (asteroids.size() == 0) {
-                    asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(), R.drawable.missile),
-                            WIDTH / 2, HEIGHT, 45, 15, player.getScore(), 13));
+                    asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(), R.drawable.asteroid),
+                            WIDTH / 2, HEIGHT, 73, 46, player.getScore(), 1));
                 } else {
 
-                    asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(), R.drawable.missile),
-                            (int) (rand.nextDouble() * (WIDTH)), HEIGHT, 45, 15, player.getScore(), 13));
+                    asteroids.add(new Asteroid(BitmapFactory.decodeResource(getResources(), R.drawable.asteroid),
+                            (int) (rand.nextDouble() * (WIDTH)), HEIGHT, 73, 46, player.getScore(), 1));
                 }
 
                 //reset timer
