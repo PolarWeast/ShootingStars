@@ -3,7 +3,10 @@ package com.example.polar.shootingstars;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -202,7 +205,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             for (Asteroid m : asteroids) {
                 m.draw(canvas);
             }
-
+            drawText(canvas);
             canvas.restoreToCount(savedState);
 
         }
@@ -219,6 +222,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         player.setY(HEIGHT / 4);
         player.setX(WIDTH / 2);
 
+
+    }
+
+    public void drawText(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(75);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("SCORE: " + (player.getScore() * 3), 10, HEIGHT - 10, paint);
 
     }
 }
